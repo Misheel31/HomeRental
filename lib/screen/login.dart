@@ -1,11 +1,19 @@
 import 'package:animated_switch/animated_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:home_rental/screen/dashboard.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Predefined credentials
+    const String correctEmail = 'admin@gmail.com';
+    const String correctPassword = 'admin';
+
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -45,6 +53,7 @@ class Login extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -60,6 +69,7 @@ class Login extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
+                    controller: passwordController,
                     obscureText: true, // For password input
                     decoration: InputDecoration(
                       filled: true,
@@ -84,12 +94,9 @@ class Login extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Rememebe me',
+                        'Remember me',
                         style: TextStyle(color: Colors.white),
                       ),
-                      // Icon(
-                      //   Icons.question_mark,
-                      // ),
                       Spacer(),
                       Text(
                         'Forgot Password',
@@ -101,18 +108,68 @@ class Login extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
-                Container(
-                  height: 60,
-                  width: 350,
-                  decoration: const BoxDecoration(color: Color(0xff0ACF83)),
-                  child: const Center(
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                GestureDetector(
+                  onTap: () {
+                    // Validate credentials
+                    if (emailController.text == correctEmail &&
+                        passwordController.text == correctPassword) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Dashboard(),
+                        ),
+                      );
+                    } else {
+                      // Show error message
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Login Failed'),
+                          content: const Text('Invalid email or password.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    height: 60,
+                    width: 350,
+                    decoration: const BoxDecoration(color: Color(0xff0ACF83)),
+                    child: const Center(
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.only(
+                    left: 100,
+                    top: 30,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Don't have an account?",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        "Signup",
+                        style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
