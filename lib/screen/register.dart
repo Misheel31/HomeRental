@@ -1,5 +1,6 @@
 import 'package:animated_switch/animated_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:home_rental/screen/login.dart';
 
 class Register extends StatelessWidget {
   const Register({super.key});
@@ -30,7 +31,7 @@ class Register extends StatelessWidget {
           ),
           Center(
             child: Column(
-              mainAxisSize: MainAxisSize.min, // Center the column vertically
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
                   'SignUp',
@@ -76,7 +77,7 @@ class Register extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
-                    obscureText: true, // For password input
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -93,7 +94,7 @@ class Register extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
-                    obscureText: true, // For password input
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -138,36 +139,53 @@ class Register extends StatelessWidget {
                   height: 60,
                   width: 350,
                   decoration: const BoxDecoration(color: Color(0xff0ACF83)),
-                  child: const Center(
-                    child: Text(
-                      'Sign Up',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Login()),
+                      );
+                    },
+                    child: const Center(
+                      child: Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
                 // const Spacer(),
-                const Padding(
-                  padding: EdgeInsets.only(
-                    left: 100,
-                    top: 30,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Already have an account?",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Text(
-                        "Login",
-                        style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                    ],
-                  ),
-                )
+                Padding(
+                    padding: const EdgeInsets.only(
+                      left: 100,
+                      top: 30,
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Already have an account?",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()),
+                            );
+                          },
+                          child: const Text(
+                            "Login",
+                            style: TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
               ],
             ),
           ),

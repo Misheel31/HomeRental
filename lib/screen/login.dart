@@ -1,6 +1,7 @@
 import 'package:animated_switch/animated_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:home_rental/screen/dashboard.dart';
+import 'package:home_rental/screen/register.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -149,27 +150,39 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(
+                Padding(
+                  padding: const EdgeInsets.only(
                     left: 100,
                     top: 30,
                   ),
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         "Don't have an account?",
                         style: TextStyle(color: Colors.white),
                       ),
-                      Text(
-                        "Signup",
-                        style: TextStyle(
+                      GestureDetector(
+                        onTap: () {
+                          // Navigate to Register screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Register(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          " Signup", // Add a space before "Signup" for proper spacing
+                          style: TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
-                            fontSize: 18),
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
