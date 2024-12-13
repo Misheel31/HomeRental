@@ -111,30 +111,46 @@ class Login extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // Validate credentials
-                    if (emailController.text == correctEmail &&
-                        passwordController.text == correctPassword) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Dashboard(),
-                        ),
-                      );
-                    } else {
-                      // Show error message
+                    if (emailController.text.isEmpty ||
+                        passwordController.text.isEmpty) {
                       showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Login Failed'),
-                          content: const Text('Invalid email or password.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Login Failed'),
+                                content:
+                                    const Text('Please fill in all fields.'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('OK'))
+                                ],
+                              ));
+                    } else {
+                      // Validate credentials
+                      if (emailController.text == correctEmail &&
+                          passwordController.text == correctPassword) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Dashboard(),
+                          ),
+                        );
+                      } else {
+                        // Show error message
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Login Failed'),
+                            content: const Text('Invalid email or password.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Container(

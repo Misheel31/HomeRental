@@ -2,8 +2,49 @@ import 'package:animated_switch/animated_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:home_rental/screen/login.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
+
+  @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+
+  void _validateAndSubmit(
+      String email, String username, String password, String confirmPassword) {
+    if (email.isEmpty ||
+        username.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      _showAlertDialog("Error", "Please fill all fields");
+    } else {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const Login()));
+    }
+  }
+
+  void _showAlertDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text("OK"))
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +87,7 @@ class Register extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -62,6 +104,7 @@ class Register extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
                     obscureText: true,
+                    controller: usernameController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -78,6 +121,7 @@ class Register extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
                     obscureText: true,
+                    controller: passwordController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -95,6 +139,7 @@ class Register extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: TextField(
                     obscureText: true,
+                    controller: confirmPasswordController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: const Color(0xffD8D8DD),
@@ -118,7 +163,7 @@ class Register extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Rememebe me',
+                        'Rememeber me',
                         style: TextStyle(color: Colors.white),
                       ),
                       // Icon(
@@ -135,26 +180,29 @@ class Register extends StatelessWidget {
                 const SizedBox(
                   height: 25,
                 ),
+
                 Container(
                   height: 60,
                   width: 350,
                   decoration: const BoxDecoration(color: Color(0xff0ACF83)),
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Login()),
-                      );
-                    },
-                    child: const Center(
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
+                      onTap: () {
+                        _validateAndSubmit(
+                          emailController.text,
+                          usernameController.text,
+                          passwordController.text,
+                          confirmPasswordController.text,
+                        );
+                      },
+                      child: const Center(
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      )),
                 ),
+
                 // const Spacer(),
                 Padding(
                     padding: const EdgeInsets.only(
@@ -183,7 +231,7 @@ class Register extends StatelessWidget {
                               fontSize: 18,
                             ),
                           ),
-                        ),
+                        )
                       ],
                     )),
               ],
