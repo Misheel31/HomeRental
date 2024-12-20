@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:home_rental/screen/favorites.dart';
 import 'package:home_rental/screen/feature_detail_screen.dart';
 import 'package:home_rental/screen/feature_search.dart';
+import 'package:home_rental/screen/house_list_screen.dart';
 import 'package:home_rental/screen/profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -52,7 +53,7 @@ class _DashboardState extends State<DashboardScreen> {
       "title": "Millennium Park Suites",
       "image": "assets/images/splashscreen.webp",
       "price": "\$1700",
-      "location": "NEw York, USA",
+      "location": "New York, USA",
       "description":
           "Elegant downtown apartment offering breathtaking views of Millennium Park and Lake Michigan"
     },
@@ -87,12 +88,12 @@ class _DashboardState extends State<DashboardScreen> {
   String? _selectedPriceRange;
 
   final List<String> cities = [
-    "New York",
-    "San Francisco",
+    "New York, USA",
+    "",
     "Austin",
     "Los Angeles",
     "Seatlle",
-    "Chicago"
+    "Chicago, USA"
   ];
 
   final List<String> priceRanges = ["\$500", "\$1000", "\$1200", "\$1100"];
@@ -164,8 +165,8 @@ class _DashboardState extends State<DashboardScreen> {
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard, size: isTablet ? 28 : 24),
-            label: 'Dashboard',
+            icon: Icon(Icons.home, size: isTablet ? 28 : 24),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite, size: isTablet ? 28 : 24),
@@ -176,8 +177,8 @@ class _DashboardState extends State<DashboardScreen> {
             label: 'Profile',
           ),
         ],
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[300],
+        selectedItemColor: Colors.blueGrey,
+        unselectedItemColor: Colors.white,
         backgroundColor: Colors.blueAccent,
         elevation: 10,
         selectedLabelStyle: TextStyle(
@@ -241,36 +242,36 @@ class _DashboardState extends State<DashboardScreen> {
   }
 
   // Filter Chips Row
-  // Widget _buildFilterChips() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //     children: [
-  //       FilterChip(
-  //         label: const Text('House'),
-  //         onSelected: (_) {
-  //           Navigator.push(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => const HouseListScreen()),
-  //           );
-  //         },
-  //         backgroundColor: Colors.grey[200],
-  //         selectedColor: Colors.blueAccent.withOpacity(0.2),
-  //       ),
-  //       FilterChip(
-  //         label: const Text('City'),
-  //         onSelected: (_) {},
-  //         backgroundColor: Colors.grey[200],
-  //         selectedColor: Colors.blueAccent.withOpacity(0.2),
-  //       ),
-  //       FilterChip(
-  //         label: const Text('Price Range'),
-  //         onSelected: (_) {},
-  //         backgroundColor: Colors.grey[200],
-  //         selectedColor: Colors.blueAccent.withOpacity(0.2),
-  //       ),
-  //     ],
-  //   );
-  // }
+  Widget _buildFilterChips() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FilterChip(
+          label: const Text('House'),
+          onSelected: (_) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HouseListScreen()),
+            );
+          },
+          backgroundColor: Colors.grey[200],
+          selectedColor: Colors.blueAccent.withOpacity(0.2),
+        ),
+        FilterChip(
+          label: const Text('City'),
+          onSelected: (_) {},
+          backgroundColor: Colors.grey[200],
+          selectedColor: Colors.blueAccent.withOpacity(0.2),
+        ),
+        FilterChip(
+          label: const Text('Price Range'),
+          onSelected: (_) {},
+          backgroundColor: Colors.grey[200],
+          selectedColor: Colors.blueAccent.withOpacity(0.2),
+        ),
+      ],
+    );
+  }
 
   Widget _buildCityDropdown() {
     return ListView.builder(
@@ -326,13 +327,14 @@ class _DashboardState extends State<DashboardScreen> {
           crossAxisCount: crossAxisCount,
           crossAxisSpacing: isTablet ? 20 : 16,
           mainAxisSpacing: isTablet ? 20 : 16,
-          childAspectRatio: isTablet ? 0.85 : 0.75,
+          childAspectRatio: isTablet ? 0.75 : 0.65, // Adjusted for larger image
         ),
         itemCount: features.length,
         itemBuilder: (context, index) {
           final feature = filteredFeatures[index];
           final isFavorite =
               _favoriteIndices.contains(features.indexOf(feature));
+          final rating = (4 + (index % 10) / 10).toStringAsFixed(1);
 
           return GestureDetector(
             onTap: () {
@@ -354,88 +356,140 @@ class _DashboardState extends State<DashboardScreen> {
               ),
               elevation: 5,
               shadowColor: Colors.black26,
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Feature Image
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(feature['image']!),
-                        fit: BoxFit.cover,
+                  // Image Section with increased height
+                  Stack(
+                    children: [
+                      SizedBox(
+                        height: isTablet ? 200 : 160, // Increased height
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
+                          child: Image.asset(
+                            feature['image']!,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
-                    ),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: isTablet ? 18 : 16,
+                          child: IconButton(
+                            icon: Icon(
+                              isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isFavorite ? Colors.red : Colors.grey,
+                              size: isTablet ? 20 : 18,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (isFavorite) {
+                                  _favoriteIndices
+                                      .remove(features.indexOf(feature));
+                                } else {
+                                  _favoriteIndices
+                                      .add(features.indexOf(feature));
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  // Gradient Overlay
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.7),
-                          Colors.transparent
+                  // Content Below Image with proper spacing
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0), // Increased padding
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // Added to distribute space
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                feature['title']!,
+                                style: TextStyle(
+                                  fontSize: isTablet ? 14 : 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                    size: isTablet ? 16 : 14,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    rating,
+                                    style: TextStyle(
+                                      fontSize: isTablet ? 12 : 10,
+                                      color: Colors.grey[700],
+                                    ),
+                                  ),
+                                  Text(
+                                    ' (${100 + index} reviews)',
+                                    style: TextStyle(
+                                      fontSize: isTablet ? 12 : 10,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: Colors.grey[600],
+                                    size: isTablet ? 16 : 14,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      feature['location']!,
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 12 : 10,
+                                        color: Colors.grey[600],
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Text(
+                                feature['price']!,
+                                style: TextStyle(
+                                  fontSize: isTablet ? 16 : 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                    ),
-                  ),
-                  // Feature Title
-                  Positioned(
-                    bottom: isTablet ? 12 : 8,
-                    left: isTablet ? 12 : 8,
-                    right: isTablet ? 12 : 8,
-                    child: Column(
-                      children: [
-                        Text(
-                          feature['title']!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: isTablet ? 16 : 14,
-                          ),
-                          // textAlign: TextAlign.center,
-                        ),
-                        Text(
-                          feature['price']!,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: isTablet ? 14 : 12,
-                          ),
-                          // textAlign: TextAlign.end,
-                        ),
-                        Text(
-                          feature['location']!,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: isTablet ? 14 : 12,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  // Favorite Button
-                  Positioned(
-                    top: isTablet ? 12 : 8,
-                    right: isTablet ? 12 : 8,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: isTablet ? 20 : 16,
-                      child: IconButton(
-                        icon: Icon(
-                          isFavorite ? Icons.favorite : Icons.favorite_border,
-                          color: isFavorite ? Colors.red : Colors.grey,
-                          size: isTablet ? 24 : 20,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (isFavorite) {
-                              _favoriteIndices
-                                  .remove(features.indexOf(feature));
-                            } else {
-                              _favoriteIndices.add(features.indexOf(feature));
-                            }
-                          });
-                        },
                       ),
                     ),
                   ),
