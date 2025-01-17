@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_rental/screen/login.dart';
+import 'package:home_rental/features/auth/presentation/view/login_view.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
             const Center(
               child: CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/images/profile_pic.png'),
+                backgroundImage: AssetImage('assets/images/image1.png'),
               ),
             ),
             const SizedBox(height: 10),
@@ -94,7 +94,7 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Login()),
+                  MaterialPageRoute(builder: (context) => LoginView()),
                 );
               },
             ),
