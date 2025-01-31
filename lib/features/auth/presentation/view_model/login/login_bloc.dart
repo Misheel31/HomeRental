@@ -56,6 +56,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginUserEvent>(
       (event, emit) async {
         emit(state.copyWith(isLoading: true));
+        debugPrint('Login started for email: ${event.email}');
+
         final result = await _loginUseCase(
           LoginParams(
             email: event.email,
@@ -65,6 +67,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         result.fold(
           (failure) {
+            debugPrint('Login failed: $failure');
             emit(state.copyWith(isLoading: false, isSuccess: false));
             showMySnackBar(
               context: event.context,
@@ -73,19 +76,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             );
           },
           (token) {
+            debugPrint('Login successful, token: $token');
             emit(state.copyWith(isLoading: false, isSuccess: true));
             showMySnackBar(
               context: event.context,
               message: "Login Successful",
               color: Colors.green,
             );
+            debugPrint('Navigating to HomeView...');
             add(
               NavigateHomeScreenEvent(
                 context: event.context,
                 destination: const HomeView(),
               ),
             );
-            //_homeCubit.setToken(token);
           },
         );
       },
