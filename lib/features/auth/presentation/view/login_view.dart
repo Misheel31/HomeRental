@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_rental/core/common/snackbar/my_snackbar.dart';
 import 'package:home_rental/features/auth/presentation/view/register_view.dart';
 import 'package:home_rental/features/auth/presentation/view_model/login/login_bloc.dart';
-import 'package:home_rental/features/home/presentation/view/home_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -14,8 +12,8 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController(text: 'admin@gmail.com');
-  final _passwordController = TextEditingController(text: 'admin');
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   String? _errorMessage;
 
@@ -198,25 +196,25 @@ class _LoginViewState extends State<LoginView> {
                                       password: _passwordController.text,
                                     ),
                                   );
-                              if (_emailController.text == 'admin@gmail.com' &&
-                                  _passwordController.text == 'admin') {
-                                context.read<LoginBloc>().add(
-                                      NavigateHomeScreenEvent(
-                                        destination: const HomeView(),
-                                        context: context,
-                                      ),
-                                    );
-                              } else {
-                                setState(() {
-                                  _errorMessage =
-                                      'Invalid username or password';
-                                });
-                                showMySnackBar(
-                                  context: context,
-                                  message: 'Invalid username or password',
-                                  color: Colors.red,
-                                );
-                              }
+                              // if (_emailController.text == 'admin@gmail.com' &&
+                              //     _passwordController.text == 'admin') {
+                              //   context.read<LoginBloc>().add(
+                              //         NavigateHomeScreenEvent(
+                              //           destination: const HomeView(),
+                              //           context: context,
+                              //         ),
+                              //       );}
+                              // else {
+                              //   setState(() {
+                              //     _errorMessage =
+                              //         'Invalid username or password';
+                              //   });
+                              //   showMySnackBar(
+                              //     context: context,
+                              //     message: 'Invalid username or password',
+                              //     color: Colors.red,
+                              //   );
+                              // }
                             }
                           },
                           child: const Text(
