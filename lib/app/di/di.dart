@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:home_rental/app/shared_prefs/token_shared_prefs.dart';
 import 'package:home_rental/core/network/api_service.dart';
 import 'package:home_rental/core/network/hive_service.dart';
 import 'package:home_rental/features/auth/data/data_source/local_data_source/auth_local_datasource.dart';
@@ -12,20 +13,30 @@ import 'package:home_rental/features/auth/domain/use_case/upload_image_usecase.d
 import 'package:home_rental/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:home_rental/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:home_rental/features/home/presentation/view_model/home_cubit.dart';
+import 'package:home_rental/features/property/data/data_source/remote_datasource/property_remote_datasource.dart';
+import 'package:home_rental/features/property/data/repository/property_remote_repository.dart';
+import 'package:home_rental/features/property/domain/use_case/create_property_usecase.dart';
+import 'package:home_rental/features/property/domain/use_case/delete_property_usecase.dart';
+import 'package:home_rental/features/property/domain/use_case/get_all_property_usecase.dart';
 import 'package:home_rental/features/splash/presentation/view_model/splash_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // First initialize hive service
+  await _initSharedPreferences();
   await _initHiveService();
   await _initApiService();
-
   await _initHomeDependencies();
   await _initRegisterDependencies();
   await _initLoginDependencies();
-
   await _initSplashScreenDependencies();
+  await _initPropertyDependencies();
+}
+
+Future<void> _initSharedPreferences() async {
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 }
 
 _initHiveService() {
@@ -41,7 +52,7 @@ _initApiService() {
 _initRegisterDependencies() {
   // =========================== Data Source ===========================
   // init local data source
-  getIt.registerLazySingleton(
+  getIt.registerLazySingleton<AuthLocalDatasource>(
     () => AuthLocalDatasource(getIt<HiveService>()),
   );
 
@@ -92,6 +103,37 @@ _initRegisterDependencies() {
   );
 }
 
+_initPropertyDependencies() async {
+  // Register the PropertyRemoteDatasource
+  getIt.registerLazySingleton<PropertyRemoteDatasource>(
+    () => PropertyRemoteDatasource(dio: getIt<Dio>()),
+  );
+
+  // Register the PropertyRemoteRepository
+  getIt.registerLazySingleton<PropertyRemoteRepository>(
+    () => PropertyRemoteRepository(
+      getIt<AuthRemoteDataSource>(),
+      remoteDataSource: getIt<PropertyRemoteDatasource>(),
+    ),
+  );
+
+  // Register the GetAllPropertyUsecase
+  getIt.registerLazySingleton<GetAllPropertyUsecase>(
+    () => GetAllPropertyUsecase(
+      propertyRepository: getIt<PropertyRemoteRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<CreatePropertyUseCase>(() =>
+      CreatePropertyUseCase(
+          propertyRepository: getIt<PropertyRemoteRepository>()));
+
+  getIt.registerLazySingleton<DeletePropertyUsecase>(() =>
+      DeletePropertyUsecase(
+          propertyRepository: getIt<PropertyRemoteRepository>(),
+          tokenSharedPrefs: getIt<TokenSharedPrefs>()));
+}
+
 _initHomeDependencies() async {
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(),
@@ -107,9 +149,14 @@ _initLoginDependencies() async {
   //   ),
   // );
 
+  getIt.registerLazySingleton<TokenSharedPrefs>(
+    () => TokenSharedPrefs(getIt<SharedPreferences>()),
+  );
+
   getIt.registerLazySingleton<LoginUseCase>(
     () => LoginUseCase(
       getIt<AuthRemoteRepository>(),
+      getIt<TokenSharedPrefs>(),
     ),
   );
 

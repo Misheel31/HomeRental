@@ -87,7 +87,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             add(
               NavigateHomeScreenEvent(
                 context: event.context,
-                destination: const HomeView(),
+                destination: const HomePage(),
               ),
             );
           },

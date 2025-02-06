@@ -15,8 +15,8 @@ class AuthRemoteRepository implements IAuthRepository {
   Future<Either<Failure, String>> loginUser(
       String email, String password) async {
     try {
-      await _authRemoteDataSource.loginUser(email, password);
-      return const Right("Login Successful");
+      final token = await _authRemoteDataSource.loginUser(email, password);
+      return Right(token);
     } catch (e) {
       return Left(ApiFailure(message: e.toString()));
     }
