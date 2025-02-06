@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:home_rental/features/auth/presentation/view/login_view.dart';
 import 'package:home_rental/features/auth/presentation/view_model/signup/register_bloc.dart';
+import 'package:home_rental/features/auth/presentation/widget/register_widget/image_picker_widget.dart';
+import 'package:home_rental/features/auth/presentation/widget/register_widget/input_field_widget.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -21,14 +23,6 @@ class _RegisterViewState extends State<RegisterView> {
   final _confirmpasswordController = TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-
-  Future<void> checkCameraPermission() async {
-    if (await Permission.camera.request().isRestricted ||
-        await Permission.camera.request().isDenied) {
-      await Permission.camera.request();
-    }
-  }
-
   File? _image;
 
   Future<void> _pickImage(ImageSource source) async {
@@ -51,35 +45,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocListener<RegisterBloc, RegisterState>(
-    //   listener: (context, state) {
-    //     if (state.isLoading) {
-    //       // Show loading indicator
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         const SnackBar(
-    //           content: Text('Uploading image...'),
-    //           duration: Duration(seconds: 2),
-    //         ),
-    //       );
-    //     } else if (state.isSuccess) {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         const SnackBar(
-    //           content: Text('Image uploaded successfully!'),
-    //           backgroundColor: Colors.green,
-    //           duration: Duration(seconds: 2),
-    //         ),
-    //       );
-    //     } else {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         const SnackBar(
-    //           content: Text('Image upload failed!'),
-    //           backgroundColor: Colors.red,
-    //           duration: Duration(seconds: 2),
-    //         ),
-    //       );
-    //     }
-    //   },
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -91,72 +56,12 @@ class _RegisterViewState extends State<RegisterView> {
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Image Picker Section
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),
-                    ),
-                    builder: (context) => Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              checkCameraPermission();
-                              _pickImage(ImageSource.camera);
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.camera),
-                            label: const Text('Camera'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
-                              textStyle: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              _pickImage(ImageSource.gallery);
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.image),
-                            label: const Text('Gallery'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
-                              textStyle: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: _image != null
-                      ? FileImage(_image!)
-                      : const AssetImage('assets/images/image1.png')
-                          as ImageProvider,
-                  child: const Align(
-                    alignment: Alignment.bottomRight,
-                    child: CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.teal,
-                      child: Icon(
-                        Icons.edit,
-                        size: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
+              ImagePickerWidget(
+                image: _image,
+                onCameraTap: () => _pickImage(ImageSource.camera),
+                onGalleryTap: () => _pickImage(ImageSource.gallery),
               ),
               const SizedBox(height: 30),
               // Form title
@@ -183,15 +88,10 @@ class _RegisterViewState extends State<RegisterView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Email Input
-                        TextFormField(
+                        InputFieldWidget(
                           controller: _emailController,
-                          decoration: InputDecoration(
-                            labelText: 'Email Address',
-                            prefixIcon: const Icon(Icons.email),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                          labelText: "Email",
+                          prefixIcon: const Icon(Icons.email),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -205,15 +105,10 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         const SizedBox(height: 16),
                         // Username Input
-                        TextFormField(
+                        InputFieldWidget(
                           controller: _usernameController,
-                          decoration: InputDecoration(
-                            labelText: 'Username',
-                            prefixIcon: const Icon(Icons.person),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                          labelText: "Username",
+                          prefixIcon: const Icon(Icons.person),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your username';
@@ -223,27 +118,22 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         const SizedBox(height: 16),
                         // Password Input
-                        TextFormField(
+                        InputFieldWidget(
                           controller: _passwordController,
+                          labelText: "Password",
                           obscureText: !isPasswordVisible,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isPasswordVisible = !isPasswordVisible;
-                                });
-                              },
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -256,28 +146,23 @@ class _RegisterViewState extends State<RegisterView> {
                         ),
                         const SizedBox(height: 16),
                         // Confirm Password Input
-                        TextFormField(
+                        InputFieldWidget(
                           controller: _confirmpasswordController,
+                          labelText: "Confirm Password",
                           obscureText: !isConfirmPasswordVisible,
-                          decoration: InputDecoration(
-                            labelText: 'Confirm Password',
-                            prefixIcon: const Icon(Icons.lock),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                isConfirmPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isConfirmPasswordVisible =
-                                      !isConfirmPasswordVisible;
-                                });
-                              },
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isConfirmPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                             ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                isConfirmPasswordVisible =
+                                    !isConfirmPasswordVisible;
+                              });
+                            },
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -329,14 +214,17 @@ class _RegisterViewState extends State<RegisterView> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        // Sign In Redirect
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text('Already have an account?'),
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const LoginView()));
                               },
                               child: const Text(
                                 'Sign In',
