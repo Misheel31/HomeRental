@@ -16,6 +16,7 @@ void main() {
     repository = AuthRepoMock();
     tokenSharedPrefs = MockTokenSharedPrefs();
     useCase = LoginUseCase(repository, tokenSharedPrefs);
+    
   });
 
   test(
