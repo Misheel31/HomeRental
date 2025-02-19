@@ -55,7 +55,6 @@ void main() {
       verifyNoMoreInteractions(tokenSharedPrefs);
     },
   );
-
   tearDown(() {
     reset(repository);
     reset(tokenSharedPrefs);
