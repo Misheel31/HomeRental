@@ -75,44 +75,44 @@ class PropertyCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      CircleAvatar(
-                        backgroundColor: Colors.white,
-                        radius: isTablet ? 18 : 16,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.grey[700],
-                            size: isTablet ? 22 : 18,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context2) {
-                                return AlertDialog(
-                                  title: const Text('Delete Property'),
-                                  content: Text(
-                                      'Are you sure you want to delete "${property.title}"?'),
-                                  actions: [
-                                    TextButton(
-                                      child: const Text('Cancel'),
-                                      onPressed: () {
-                                        Navigator.of(context2).pop();
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text('Delete'),
-                                      onPressed: () {
-                                        onDeletePressed();
-                                        Navigator.of(context2).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                        ),
-                      ),
+                      // CircleAvatar(
+                      //   backgroundColor: Colors.white,
+                      //   radius: isTablet ? 18 : 16,
+                      //   child: IconButton(
+                      //     icon: Icon(
+                      //       Icons.delete,
+                      //       color: Colors.grey[700],
+                      //       size: isTablet ? 22 : 18,
+                      //     ),
+                      //     onPressed: () {
+                      //       showDialog(
+                      //         context: context,
+                      //         builder: (BuildContext context2) {
+                      //           return AlertDialog(
+                      //             title: const Text('Delete Property'),
+                      //             content: Text(
+                      //                 'Are you sure you want to delete "${property.title}"?'),
+                      //             actions: [
+                      //               TextButton(
+                      //                 child: const Text('Cancel'),
+                      //                 onPressed: () {
+                      //                   Navigator.of(context2).pop();
+                      //                 },
+                      //               ),
+                      //               TextButton(
+                      //                 child: const Text('Delete'),
+                      //                 onPressed: () {
+                      //                   onDeletePressed();
+                      //                   Navigator.of(context2).pop();
+                      //                 },
+                      //               ),
+                      //             ],
+                      //           );
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
