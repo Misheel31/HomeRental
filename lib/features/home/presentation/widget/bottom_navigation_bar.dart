@@ -25,13 +25,17 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Favorites',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark, size: 28),
+          label: 'Bookings',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.person, size: 28),
           label: 'Profile',
         ),
       ],
-      selectedItemColor: Colors.blueGrey,
-      unselectedItemColor: Colors.white,
-      backgroundColor: Colors.blueAccent,
+      selectedItemColor: const Color.fromARGB(255, 101, 160, 190),
+      unselectedItemColor: const Color.fromARGB(255, 181, 128, 128),
+      backgroundColor: const Color.fromARGB(255, 29, 37, 50),
       elevation: 10,
       selectedLabelStyle: const TextStyle(
         fontWeight: FontWeight.bold,
