@@ -10,7 +10,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Add a listener to the PageController
     controller.addListener(() {
       final currentIndex = controller.page?.round() ?? 0;
       context.read<OnboardingBloc>().updateCurrentIndex(currentIndex);
@@ -26,8 +25,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           TextButton(
             onPressed: () {
               context.read<OnboardingBloc>().skipToLastPage();
-              controller
-                  .jumpToPage(controller.initialPage + 7); // Adjust as needed
+              controller.jumpToPage(controller.initialPage + 7);
             },
             child: const Text(
               "Skip",
@@ -39,17 +37,16 @@ class CustomBottomNavigationBar extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Use SmoothPageIndicator for visual indication of the current page
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:
                         List.generate(state.onboardingItems.length, (index) {
                       return GestureDetector(
                         onTap: () {
-                          controller.jumpToPage(
-                              index); // Navigate to the selected page
-                          context.read<OnboardingBloc>().updateCurrentIndex(
-                              index); // Update current index
+                          controller.jumpToPage(index);
+                          context
+                              .read<OnboardingBloc>()
+                              .updateCurrentIndex(index);
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -58,9 +55,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: state.currentIndex == index
-                                ? const Color(0xFF5D4037) // Active color
-                                : const Color.fromARGB(
-                                    255, 141, 126, 121), // Inactive color
+                                ? const Color(0xFF5D4037)
+                                : const Color.fromARGB(255, 141, 126, 121),
                           ),
                         ),
                       );
