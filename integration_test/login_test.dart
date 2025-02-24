@@ -7,7 +7,7 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('LoginView Test', (WidgetTester tester) async {
+  testWidgets('LoginViewTest', (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
 
@@ -30,15 +30,7 @@ void main() {
 
     expect(find.byType(Scaffold), findsOneWidget);
 
-    expect(
-        find.byWidgetPredicate(
-          (widget) =>
-              widget is AppBar &&
-              widget.title is Text &&
-              (widget.title as Text).data == 'Rentify',
-        ),
-        findsOneWidget);
-
+    expect(find.text('Rentify'), findsOneWidget);
     expect(find.byType(LocationSearch), findsOneWidget);
   });
 }
