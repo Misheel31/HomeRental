@@ -37,13 +37,14 @@ class AuthApiModel extends Equatable {
       image: image,
       role: role,
       username: username,
-      password: password ?? '', 
+      password: password ?? '',
     );
   }
 
   // From Entity
   factory AuthApiModel.fromEntity(AuthEntity entity) {
     return AuthApiModel(
+      id: entity.userId,
       email: entity.email,
       image: entity.image,
       role: entity.role,
@@ -53,6 +54,5 @@ class AuthApiModel extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [id, email, image, role, username,password];
+  List<Object?> get props => [id, email, image, role, username, password];
 }
