@@ -12,18 +12,53 @@ class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
 
   @override
-  State<RegisterView> createState() => _RegisterViewState();
+  State<RegisterView> createState() => RegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmpasswordController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmpasswordController = TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   File? _image;
+
+  String? validateEmail(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your email';
+    } else if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
+        .hasMatch(value)) {
+      return 'Please enter a valid email';
+    }
+    return null;
+  }
+
+  String? validateUsername(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your username';
+    }
+    return null;
+  }
+
+  String? validatePassword(String value) {
+    if (value.isEmpty) {
+      return 'Please enter your password';
+    } else if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
+  String? validateConfirmPassword(String value) {
+    if (value.isEmpty) {
+      return 'Please confirm your password';
+    } else if (value != passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     try {
@@ -119,7 +154,7 @@ class _RegisterViewState extends State<RegisterView> {
                         const SizedBox(height: 16),
                         // Password Input
                         InputFieldWidget(
-                          controller: _passwordController,
+                          controller: passwordController,
                           labelText: "Password",
                           obscureText: !isPasswordVisible,
                           prefixIcon: const Icon(Icons.lock),
@@ -147,7 +182,7 @@ class _RegisterViewState extends State<RegisterView> {
                         const SizedBox(height: 16),
                         // Confirm Password Input
                         InputFieldWidget(
-                          controller: _confirmpasswordController,
+                          controller: confirmpasswordController,
                           labelText: "Confirm Password",
                           obscureText: !isConfirmPasswordVisible,
                           prefixIcon: const Icon(Icons.lock),
@@ -167,7 +202,7 @@ class _RegisterViewState extends State<RegisterView> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please confirm your password';
-                            } else if (value != _passwordController.text) {
+                            } else if (value != passwordController.text) {
                               return 'Passwords do not match';
                             }
                             return null;
@@ -188,9 +223,9 @@ class _RegisterViewState extends State<RegisterView> {
                                         context: context,
                                         email: _emailController.text,
                                         username: _usernameController.text,
-                                        password: _passwordController.text,
+                                        password: passwordController.text,
                                         confirmPassword:
-                                            _confirmpasswordController.text,
+                                            confirmpasswordController.text,
                                         image: imageName,
                                       ),
                                     );

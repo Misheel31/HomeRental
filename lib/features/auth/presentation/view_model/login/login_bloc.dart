@@ -6,6 +6,7 @@ import 'package:home_rental/features/auth/domain/use_case/login_usecase.dart';
 import 'package:home_rental/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:home_rental/features/home/presentation/view/home_view.dart';
 import 'package:home_rental/features/home/presentation/view_model/home_cubit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -75,7 +76,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               color: Colors.red,
             );
           },
-          (token) {
+          (token) async {
             debugPrint('Login successful, token: $token');
             emit(state.copyWith(isLoading: false, isSuccess: true));
             showMySnackBar(
@@ -83,6 +84,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               message: "Login Successful",
               color: Colors.green,
             );
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('token', token);
             debugPrint('Navigating to HomeView...');
             add(
               NavigateHomeScreenEvent(
