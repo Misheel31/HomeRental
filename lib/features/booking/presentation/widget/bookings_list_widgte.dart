@@ -12,6 +12,29 @@ class BookingList extends StatelessWidget {
     required this.checkoutBooking,
   });
 
+  void _showCancelConfirmation(BuildContext context, String bookingId) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Cancel Booking"),
+            content:
+                const Text("Are you sure you want to cancel this booking?"),
+            actions: [
+              TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text("No")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    cancelBooking(bookingId);
+                  },
+                  child: const Text("Yes")),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return bookings.isEmpty
@@ -39,7 +62,8 @@ class BookingList extends StatelessWidget {
                         child: Row(
                           children: [
                             ElevatedButton(
-                              onPressed: () => cancelBooking(booking['_id']),
+                              onPressed: () => _showCancelConfirmation(
+                                  context, booking['_id']),
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.red),
                               child: const Text('Cancel Booking'),
