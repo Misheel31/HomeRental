@@ -8,7 +8,8 @@ class WishlistItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(item);
+    double screenWidth = MediaQuery.of(context).size.width;
+    double imageHeight = screenWidth > 600 ? 250 : 150;
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -20,7 +21,7 @@ class WishlistItem extends StatelessWidget {
               (item['image'] != null && !item['image'].startsWith('http'))
                   ? 'http://192.168.1.70:3000/property_images/${item['image']}'
                   : item['image'],
-              height: 150,
+              height: imageHeight,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
