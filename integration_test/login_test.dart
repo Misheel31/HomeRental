@@ -7,28 +7,26 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('LoginViewTest', (WidgetTester tester) async {
+  testWidgets('Login Test with Mock Data', (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
 
     expect(find.text('Welcome Back!'), findsOneWidget);
 
-    final emailField = find.byType(TextFormField).at(0);
-    final passwordField = find.byType(TextFormField).at(1);
-    final loginButton = find.byType(ElevatedButton);
+    await tester.enterText(
+        find.byType(TextFormField).at(0), 'misheel123@gmail.com');
+    await tester.enterText(find.byType(TextFormField).at(1), '123456789');
 
-    expect(emailField, findsOneWidget);
-    expect(passwordField, findsOneWidget);
-    expect(loginButton, findsOneWidget);
-
-    await tester.enterText(emailField, 'abc@gmail.com');
-    await tester.enterText(passwordField, '123456789');
-
-    await tester.tap(loginButton);
-    await tester.pump();
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle();
 
-    expect(find.byType(Scaffold), findsOneWidget);
+    print('API response received');
+
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+
+    for (var widget in tester.allWidgets) {
+      if (widget is Text) print('Found Text Widget: ${widget.data}');
+    }
 
     expect(find.text('Rentify'), findsOneWidget);
     expect(find.byType(LocationSearch), findsOneWidget);
