@@ -44,7 +44,7 @@ class PropertyCard extends StatelessWidget {
             Stack(
               children: [
                 SizedBox(
-                  height: isTablet ? 200 : 160,
+                  height: isTablet ? 300 : 180,
                   width: double.infinity,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
