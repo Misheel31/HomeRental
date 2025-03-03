@@ -23,7 +23,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: actions,
-      centerTitle: true,
+      // centerTitle: true,
       flexibleSpace: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
