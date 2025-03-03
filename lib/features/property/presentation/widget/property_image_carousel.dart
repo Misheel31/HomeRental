@@ -18,7 +18,7 @@ class PropertyImageCarousel extends StatelessWidget {
               property.image is List ? property.image[index] : property.image;
 
           if (!image.startsWith('http')) {
-            image = 'http://10.0.2.2:3000/property_images/$image';
+            image = 'http://192.168.1.70:3000/property_images/$image';
           }
 
           image = Uri.encodeFull(image);
