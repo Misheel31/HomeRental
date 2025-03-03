@@ -25,7 +25,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     on<LoadProperties>(_onLoadProperties);
     on<AddProperty>(_onAddProperty);
     on<DeleteProperty>(_onDeleteProperty);
-    add(LoadProperties());
+    // add(LoadProperties());
   }
 
   Future<void> _onLoadProperties(

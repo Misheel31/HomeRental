@@ -21,14 +21,14 @@ Widget buildImageContainer(
         horizontal: isTablet ? 40 : 20,
         vertical: isTablet ? 50 : 30,
       ),
-      child: Center(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: imageWidth ??
-                  (isTablet ? screenWidth * 0.6 : screenWidth * 0.8),
+                  (isTablet ? screenWidth * 0.7 : screenWidth * 0.9),
               height: imageHeight ??
                   (isTablet ? screenHeight * 0.45 : screenHeight * 0.39),
               decoration: BoxDecoration(
