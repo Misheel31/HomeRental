@@ -20,31 +20,54 @@ Welcome to **Rentify**, a user-friendly home rental platform designed to make bo
 
 ### 📱 Mobile View
 
-![Splash Screen](assets/images/Splashscreen.png)  
-![Onboarding](assets/images/onboarding.png)  
-![Onboarding 1](assets/images/onboarding1.png)  
-![Onboarding 2](assets/images/onboarding_2.png)  
-![Login](assets/images/Login.png)  
-![Register](assets/images/Register.png)  
-![Home Page](assets/images/HomePage.png)  
-![Property Detail](assets/images/PropertyDetail.png)  
-![Property Detail 1](assets/images/PropertyDetail_1.png)  
-![Wishlist](assets/images/wishlist.png)  
-![Booking](assets/images/booking.png)  
-![Create Booking](assets/images/Createbooking.png)  
-![Profile](assets/images/Profile.png)
+### ![Splash Screen](assets/images/Splashscreen.png)
+
+### ![Onboarding](assets/images/onboarding.png)
+
+### ![Onboarding 1](assets/images/onboarding1.png)
+
+### ![Onboarding 2](assets/images/onboarding_2.png)
+
+### ![Login](assets/images/Login.png)
+
+### ![Register](assets/images/Register.png)
+
+### ![Home Page](assets/images/HomePage.png)
+
+### ![Property Detail](assets/images/PropertyDetail.png)
+
+### ![Property Detail 1](assets/images/PropertyDetail_1.png)
+
+### ![Wishlist](assets/images/wishlist.png)
+
+### ![Booking](assets/images/booking.png)
+
+### ![Create Booking](assets/images/Createbooking.png)
+
+### ![Profile](assets/images/Profile.png)
 
 ### 📱 Tablet View
 
-![Tablet View 1](assets/images/tab.png)  
-![Tablet View 2](assets/images/tab1.png)  
-![Tablet View 3](assets/images/tab2.png)  
-![Tablet View 4](assets/images/tab3.png)  
-![Tablet View 5](assets/images/tab4.png)  
-![Tablet View 6](assets/images/tab5.png)  
-![Tablet View 7](assets/images/tab6.png)  
-![Tablet View 8](assets/images/tab7.png)  
-![Tablet View 9](assets/images/tab8.png)  
-![Tablet View 10](assets/images/tab9.png)  
-![Tablet View 11](assets/images/tab10.png)  
-![Tablet View 12](assets/images/tab11.png)
+### ![Tablet View 1](assets/images/tab.png)
+
+### ![Tablet View 2](assets/images/tab1.png)
+
+### ![Tablet View 3](assets/images/tab2.png)
+
+### ![Tablet View 4](assets/images/tab3.png)
+
+### ![Tablet View 5](assets/images/tab4.png)
+
+### ![Tablet View 6](assets/images/tab5.png)
+
+### ![Tablet View 7](assets/images/tab6.png)
+
+### ![Tablet View 8](assets/images/tab7.png)
+
+### ![Tablet View 9](assets/images/tab8.png)
+
+### ![Tablet View 10](assets/images/tab9.png)
+
+### ![Tablet View 11](assets/images/tab10.png)
+
+### ![Tablet View 12](assets/images/tab11.png)
