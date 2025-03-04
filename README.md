@@ -4,11 +4,13 @@ Welcome to **Rentify**, a user-friendly home rental platform designed to make bo
 
 ### ✨ Features
 
-### 🔑 User Authentication – Secure login and sign-up and logout functionality to manage user accounts.
+### 🔑 User Authentication
+
+Secure login and sign-up and logout functionality to manage user accounts.
 
 ### 📜 Property Lisitngs - Users can view detailed property lisitngs, including descriptions, images, pricing and amenitites
 
-#### 📆 Booking - Seamlessly book rental properties for your stay.
+### 📆 Booking - Seamlessly book rental properties for your stay.
 
 ### ❤️ Wishlist - Users can save favorite properties for future reference.
 
@@ -20,19 +22,19 @@ Welcome to **Rentify**, a user-friendly home rental platform designed to make bo
 
 ## 📱 Mobile View
 
-![Splash Screen](assets/images/Splashscreen.png)  
+![Splash Screen](assets/images/splashscreen.png)  
 ![Onboarding](assets/images/onboarding.png)  
 ![Onboarding 1](assets/images/onboarding1.png)  
 ![Onboarding 2](assets/images/onboarding_2.png)  
-![Login](assets/images/Login.png)  
-![Register](assets/images/Register.png)  
-![Home Page](assets/images/HomePage.png)  
-![Property Detail](assets/images/PropertyDetail.png)  
-![Property Detail 1](assets/images/PropertyDetail_1.png)  
+![Login](assets/images/login.png)  
+![Register](assets/images/register.png)  
+![Home Page](assets/images/home_page.png)  
+![Property Detail](assets/images/property_detail.png)  
+![Property Detail 1](assets/images/property_detail_1.png)  
 ![Wishlist](assets/images/wishlist.png)  
 ![Booking](assets/images/booking.png)  
-![Create Booking](assets/images/Createbooking.png)  
-![Profile](assets/images/Profile.png)
+![Create Booking](assets/images/create_booking.png)  
+![Profile](assets/images/profile.png)
 
 ## 📱 Tablet View
 
