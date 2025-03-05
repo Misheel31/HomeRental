@@ -7,7 +7,7 @@ import 'package:integration_test/integration_test.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Login Test with Mock Data', (WidgetTester tester) async {
+  testWidgets('Login Test ', (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
 
