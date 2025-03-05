@@ -1,39 +1,36 @@
 part of 'profile_bloc.dart';
 
-abstract class ProfileState extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
+class ProfileState extends Equatable {
+  final bool isLoading;
+  final AuthEntity? user;
+  final String? errorMessage;
 
-class ProfileInitial extends ProfileState {}
+  const ProfileState({
+    required this.isLoading,
+    this.user,
+    this.errorMessage,
+  });
 
-class ProfileLoading extends ProfileState {}
+  factory ProfileState.initial() {
+    return const ProfileState(
+      isLoading: false,
+      user: null,
+      errorMessage: null,
+    );
+  }
 
-class ProfileLoaded extends ProfileState {
-  final UserEntity user;
-
-  ProfileLoaded(this.user);
-
-  @override
-  List<Object?> get props => [user];
-}
-
-// Error State
-class ProfileError extends ProfileState {
-  final String message;
-
-  ProfileError(this.message);
-
-  @override
-  List<Object?> get props => [message];
-}
-
-// Image Upload Success State
-class ProfileImageUploaded extends ProfileState {
-  final String imageUrl;
-
-  ProfileImageUploaded(this.imageUrl);
+  ProfileState copyWith({
+    bool? isLoading,
+    AuthEntity? user,
+    String? errorMessage,
+  }) {
+    return ProfileState(
+      isLoading: isLoading ?? this.isLoading,
+      user: user ?? this.user,
+      errorMessage: errorMessage,
+    );
+  }
 
   @override
-  List<Object?> get props => [imageUrl];
+  List<Object?> get props => [isLoading, user, errorMessage];
 }
