@@ -1,5 +1,6 @@
 ### 🏡 Rentify - Home Rental Platform
 -
+
 Welcome to Rentify, a user-friendly home rental platform designed to make booking and managing rental properties easier. Whether you're looking for short-term rental or a long-term rental, Rentify has got you covered. It's a platform, where users can securly login, signup, and logout, browse property lisitings, book homes, add them to their wishlist, filter properties based on price range and location and search by title.
 
 ### ✨ Features
@@ -32,9 +33,7 @@ Welcome to Rentify, a user-friendly home rental platform designed to make bookin
 -
 ## 📱 Mobile View
 
-![Splash Screen](assets/images/splashscreen.png)  
-![Onboarding](assets/images/onboarding.png)  
-![Onboarding 1](assets/images/onboarding1.png)  
+![Splash Screen](assets/images/splashscreen.png)  ![Onboarding](assets/images/onboarding.png) ![Onboarding 1](assets/images/onboarding1.png)  
 ![Onboarding 2](assets/images/onboarding_2.png)  
 ![Login](assets/images/login.png)  
 ![Register](assets/images/register.png)  
