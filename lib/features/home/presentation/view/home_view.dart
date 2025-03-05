@@ -275,9 +275,9 @@ class _HomePageState extends State<HomePage> {
                   child: Text(
                     "List of Properties",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Colors.blue,
                     ),
                   ),
                 ),
@@ -323,8 +323,10 @@ class _HomePageState extends State<HomePage> {
                                     if (response.statusCode == 201) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(const SnackBar(
-                                              content: Text(
-                                                  'Property added to wishlist')));
+                                        content:
+                                            Text('Property added to wishlist'),
+                                        backgroundColor: Colors.green,
+                                      ));
                                       print('Property added to wishlist');
                                     } else {
                                       ScaffoldMessenger.of(context)

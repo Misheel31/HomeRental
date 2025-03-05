@@ -1,50 +1,32 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:home_rental/features/profile/domain/entity/user_entity.dart';
-import 'package:home_rental/features/profile/domain/use_case/fetch_user_usecase.dart';
+import 'package:home_rental/features/auth/domain/entity/auth_entity.dart';
+import 'package:home_rental/features/profile/domain/use_case/get_current_user_usecase.dart';
 
 part 'profile_event.dart';
 part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final FetchUserUsecase fetchUserUsecase;
+  // final FetchUserUsecase fetchUserUsecase;
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
 
-  ProfileBloc(this.fetchUserUsecase) : super(ProfileInitial()) {
-    on<FetchUserEvent>(_onFetchUser);
-    on<UpdateUserEvent>(_onUpdateUser);
-    on<GetUserProfileEvent>(_onGetUserProfile);
+  ProfileBloc({
+    required GetCurrentUserUseCase getCurrentUserUseCase,
+  })  : _getCurrentUserUseCase = getCurrentUserUseCase,
+        super(ProfileState.initial()) {
+    on<GetCurrentUser>(_onGetCurrentUser);
   }
 
-  Future<void> _onFetchUser(
-      FetchUserEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
-    final result = await fetchUserUsecase.fetchUser();
-    result.fold(
-      (failure) => emit(ProfileError(failure.message)),
-      (user) => emit(ProfileLoaded(user)),
-    );
-  }
-
-  Future<void> _onUpdateUser(
-      UpdateUserEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
-    final result = await fetchUserUsecase.updateUser(event.user);
-    result.fold(
-      (failure) => emit(ProfileError(failure.message)),
-      (_) => emit(ProfileLoaded(event.user)),
-    );
-  }
-
-  Future<void> _onGetUserProfile(
-      GetUserProfileEvent event, Emitter<ProfileState> emit) async {
-    emit(ProfileLoading());
-    final result = await fetchUserUsecase.getUserProfile();
+  Future<void> _onGetCurrentUser(
+      GetCurrentUser event, Emitter<ProfileState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final result = await _getCurrentUserUseCase();
 
     result.fold(
-      (failure) => emit(ProfileError(failure.message)),
-      (user) => emit(ProfileLoaded(user)),
+      (failure) =>
+          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (user) => emit(
+          state.copyWith(isLoading: false, user: user, errorMessage: null)),
     );
   }
 }

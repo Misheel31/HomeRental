@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:home_rental/core/common/snackbar/my_snackbar.dart';
 import 'package:home_rental/features/auth/domain/use_case/register_user_usecase.dart';
 import 'package:home_rental/features/auth/domain/use_case/upload_image_usecase.dart';
 
@@ -19,7 +18,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       required UploadImageUsecase uploadImageUsecase})
       : _registerUserUsecase = registerUserUseCase,
         _uploadImageUsecase = uploadImageUsecase,
-        super(RegisterState.initial()) {
+        super(const RegisterState.initial()) {
     on<RegisterUser>(_onRegisterEvent);
     on<UploadImage>(_onLoadImage);
   }
@@ -39,10 +38,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     result.fold((l) => emit(state.copyWith(isLoading: false, isSuccess: false)),
         (r) {
       emit(state.copyWith(isLoading: false, isSuccess: true));
-      showMySnackBar(
-          context: event.context,
-          message: "Registration Successful",
-          color: Colors.green);
+      // showMySnackBar(
+      //     context: event.context,
+      //     message: "Registration Successful",
+      //     color: Colors.green);
     });
   }
 

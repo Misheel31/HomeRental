@@ -43,17 +43,11 @@ class ProfileOptions extends StatelessWidget {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Icons.settings, color: Colors.blueAccent),
-          title: const Text('Settings'),
-          onTap: () {},
-        ),
-        const Divider(),
-        ListTile(
           leading: const Icon(Icons.android, color: Colors.blueAccent),
           title: const Text('Version 1.0.0'),
           onTap: () {},
         ),
-        const Divider(),
+         const Divider(),
         ListTile(
             leading: const Icon(Icons.logout, color: Colors.redAccent),
             title: const Text('Logout'),

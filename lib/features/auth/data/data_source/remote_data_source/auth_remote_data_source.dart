@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:home_rental/app/constants/api_endpoints.dart';
+import 'package:home_rental/app/shared_prefs/token_shared_prefs.dart';
 import 'package:home_rental/features/auth/data/data_source/auth_data_source.dart';
+import 'package:home_rental/features/auth/data/model/auth_api_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../domain/entity/auth_entity.dart';
 
@@ -35,8 +38,62 @@ class AuthRemoteDataSource implements IAuthDataSource {
   }
 
   @override
-  Future<AuthEntity> getCurrentUser() {
-    throw UnimplementedError();
+  Future<AuthEntity> getCurrentUser() async {
+    try {
+      final sharedPreferences = await SharedPreferences.getInstance();
+      final userId = sharedPreferences.getString("user_id");
+      if (userId == null) {
+        throw Exception("User ID not found in SharedPreferences");
+      }
+
+      final tokenPrefs = TokenSharedPrefs(sharedPreferences);
+      final tokenResult = await tokenPrefs.getToken();
+      String? token;
+
+      tokenResult.fold(
+        (failure) {
+          print("Token Error: ${failure.message}");
+          token = null;
+        },
+        (t) => token = t,
+      );
+
+      if (token == null) {
+        throw Exception("Failed to retrieve authentication token");
+      }
+
+      Response response = await _dio.get(
+        "${ApiEndpoints.getUser}/$userId",
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print("User Data Response: ${response.data}"); 
+
+        try {
+          AuthApiModel apiModel = AuthApiModel.fromJson(response.data);
+          return apiModel.toEntity();
+        } catch (e) {
+          throw Exception("JSON Parsing Error: ${e.toString()}");
+        }
+      } else {
+        throw Exception(
+            "Failed to get current user: ${response.statusMessage}");
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception(
+            "Dio Error: ${e.response!.statusCode} - ${e.response!.data}");
+      } else {
+        throw Exception("Dio Error: ${e.message}");
+      }
+    } catch (e) {
+      throw Exception("Error: ${e.toString()}");
+    }
   }
 
   @override

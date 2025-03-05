@@ -1,52 +1,51 @@
-import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:home_rental/app/constants/hive_table_constant.dart';
 import 'package:home_rental/features/property/domain/entity/property_entity.dart';
-import 'package:uuid/uuid.dart';
 
 part 'property_hive_model.g.dart';
 
 @HiveType(typeId: HiveTableConstant.propertyTableId)
-class PropertyHiveModel extends Equatable {
+@HiveType(typeId: 1)
+class PropertyHiveModel extends HiveObject {
   @HiveField(0)
-  final String? id;
+  String id;
   @HiveField(1)
-  final String title;
+  String title;
   @HiveField(2)
-  final String description;
+  String description;
   @HiveField(3)
-  final String location;
+  String location;
   @HiveField(4)
-  final String image;
+  String image;
   @HiveField(5)
-  final double pricePerNight;
+  double pricePerNight;
   @HiveField(6)
-  final bool available;
+  bool available;
   @HiveField(7)
-  final int bedCount;
+  int bedCount;
   @HiveField(8)
-  final int bedroomCount;
+  int bedroomCount;
   @HiveField(9)
-  final String city;
+  String city;
   @HiveField(10)
-  final String state;
+  String state;
   @HiveField(11)
-  final String country;
+  String country;
   @HiveField(12)
-  final int guestCount;
+  int guestCount;
   @HiveField(13)
-  final int bathroomCount;
+  int bathroomCount;
   @HiveField(14)
-  final List<String> amenities;
+  List<String> amenities;
 
   PropertyHiveModel({
-    String? id,
+    required this.id,
     required this.title,
     required this.description,
     required this.location,
     required this.image,
     required this.pricePerNight,
-    this.available = true,
+    required this.available,
     required this.bedCount,
     required this.bedroomCount,
     required this.city,
@@ -55,30 +54,11 @@ class PropertyHiveModel extends Equatable {
     required this.guestCount,
     required this.bathroomCount,
     required this.amenities,
-  }) : id = id ?? const Uuid().v4();
+  });
 
-  // Initial Constructor
-  const PropertyHiveModel.initial()
-      : id = '',
-        title = '',
-        description = '',
-        location = '',
-        image = '',
-        pricePerNight = 0.0,
-        available = true,
-        bedCount = 0,
-        bedroomCount = 0,
-        city = '',
-        state = '',
-        country = '',
-        guestCount = 0,
-        bathroomCount = 0,
-        amenities = const [];
-
-  // From Entity
   factory PropertyHiveModel.fromEntity(PropertyEntity entity) {
     return PropertyHiveModel(
-      id: entity.id,
+      id: entity.id ?? '',
       title: entity.title,
       description: entity.description,
       location: entity.location,
@@ -96,7 +76,6 @@ class PropertyHiveModel extends Equatable {
     );
   }
 
-  // To Entity
   PropertyEntity toEntity() {
     return PropertyEntity(
       id: id,
@@ -116,23 +95,4 @@ class PropertyHiveModel extends Equatable {
       amenities: amenities,
     );
   }
-
-  @override
-  List<Object?> get props => [
-        id,
-        title,
-        description,
-        location,
-        image,
-        pricePerNight,
-        available,
-        bedCount,
-        bedroomCount,
-        city,
-        state,
-        country,
-        guestCount,
-        bathroomCount,
-        amenities,
-      ];
 }
