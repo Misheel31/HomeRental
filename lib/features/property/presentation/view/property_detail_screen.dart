@@ -25,6 +25,7 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
   DateTime? startDate;
   DateTime? endDate;
   int guestCount = 1;
+  List<DateTime> unavailableDates = [];
 
   @override
   void initState() {
@@ -68,14 +69,14 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
             }
 
             final property = snapshot.data!;
-            final amenities = property.amenities
-                // 'Outdoor kitchen',
-                // 'Wi-fi',
-                // 'Pets allowed',
-                // 'Air conditioning',
-                // 'Parking available',
-                // 'Washing machine',
-                ;
+            final amenities = [
+              'Outdoor kitchen',
+              'Wi-fi',
+              'Pets allowed',
+              'Air conditioning',
+              'Parking available',
+              'Washing machine',
+            ];
 
             return Padding(
               padding: const EdgeInsets.all(16.0),
@@ -133,6 +134,9 @@ class _PropertyDetailsScreenState extends State<PropertyDetailsScreen> {
                           MaterialPageRoute(
                               builder: (context) => CreateBookingView(
                                     propertyId: property.id ?? '',
+                                    startDate: startDate,
+                                    endDate: endDate,
+                                    guestCount: guestCount,
                                   )));
                     },
                   ),

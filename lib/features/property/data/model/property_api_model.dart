@@ -60,20 +60,25 @@ class PropertyApiModel extends Equatable {
   factory PropertyApiModel.fromJson(Map<String, dynamic> json) {
     return PropertyApiModel(
       id: json['_id'] ?? 'default_id',
-      title: json['title'],
-      description: json['description'],
-      location: json['location'],
-      image: json['image'],
-      pricePerNight: (json['pricePerNight'] as num).toDouble(),
+      title: json['title'] ?? 'No title',
+      description: json['description'] ?? 'No description',
+      location: json['location'] ?? 'Unknown location',
+      image:
+          (json['image'] != null && json['image'].toString().trim().isNotEmpty)
+              ? Uri.encodeFull(json['image'].trim())
+              : 'https://yourdefaultimage.com/default.jpg',
+      pricePerNight: (json['pricePerNight'] as num?)?.toDouble() ?? 0.0,
       available: json['available'] ?? true,
-      bedCount: json['bedCount'],
-      bedroomCount: json['bedroomCount'],
-      city: json['city'],
-      state: json['state'],
-      country: json['country'],
-      guestCount: json['guestCount'],
-      bathroomCount: json['bathroomCount'],
-      amenities: List<String>.from(json['amenities']),
+      bedCount: json['bedCount'] ?? 1,
+      bedroomCount: json['bedroomCount'] ?? 1,
+      city: json['city'] ?? 'Unknown city',
+      state: json['state'] ?? 'Unknown state',
+      country: json['country'] ?? 'Unknown country',
+      guestCount: json['guestCount'] ?? 1,
+      bathroomCount: json['bathroomCount'] ?? 1,
+      amenities: (json['amenities'] != null)
+          ? List<String>.from(json['amenities'])
+          : [],
     );
   }
 
