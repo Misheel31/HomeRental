@@ -118,7 +118,6 @@ void main() {
         bathroomCount: 2,
         amenities: ['Wi-Fi', 'Pool'],
       );
-
       expect(property1, equals(property2));
     });
   });
