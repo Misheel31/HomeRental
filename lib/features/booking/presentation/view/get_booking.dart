@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:home_rental/features/booking/presentation/widget/booking_api_service.dart';
 import 'package:home_rental/features/booking/presentation/widget/bookings_list_widgte.dart';
+import 'package:home_rental/features/booking/presentation/widget/checkout_confirmation_page.dart';
 import 'package:home_rental/features/home/presentation/view/home_view.dart';
 import 'package:home_rental/features/home/presentation/widget/bottom_navigation_bar.dart';
 import 'package:home_rental/features/profile/data/data_source/remote_datasource/profile_remote_datasource.dart';
@@ -73,6 +74,7 @@ class _GetBookingState extends State<GetBooking> {
       setState(() {
         bookings = fetchedBookings;
       });
+      print(bookings);
     } catch (e) {
       setState(() {
         error = 'No booking found';
@@ -108,15 +110,23 @@ class _GetBookingState extends State<GetBooking> {
         return;
       }
 
-      final totalPrice = bookingDetails['totalPrice'];
+      final totalPrice =
+          double.tryParse(bookingDetails['totalPrice'].toString()) ?? 0.0;
+      final checkInDate = bookingDetails['startDate'];
+      final checkOutDate = bookingDetails['endDate'];
+
+      print("Proceeding to confirm booking with totalPrice: $totalPrice");
 
       await _apiService.confirmBooking(bookingId);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Booking completed! Total Price: \$$totalPrice'),
-        ),
-      );
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => CheckoutConfirmationPage(
+                    totalPrice: totalPrice,
+                    checkInDate: checkInDate,
+                    checkOutDate: checkOutDate,
+                  )));
     } catch (e) {
       setState(() {
         error = 'Error during checkout: $e';

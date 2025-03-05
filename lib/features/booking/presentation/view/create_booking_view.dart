@@ -8,22 +8,31 @@ import 'package:home_rental/features/booking/presentation/widget/date_picker_fie
 import 'package:home_rental/features/booking/presentation/widget/guests_dropdown.dart';
 import 'package:home_rental/features/booking/presentation/widget/total_price_display.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateBookingView extends StatefulWidget {
   final String propertyId;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final int guestCount;
 
-  const CreateBookingView({super.key, required this.propertyId});
+  const CreateBookingView(
+      {super.key,
+      required this.propertyId,
+      this.startDate,
+      this.endDate,
+      required this.guestCount});
 
   @override
   _BookingPageState createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<CreateBookingView> {
-  final TextEditingController _startDateController = TextEditingController();
-  final TextEditingController _endDateController = TextEditingController();
-
+  late TextEditingController _startDateController;
+  late TextEditingController _endDateController;
   int guests = 1;
+
   double totalPrice = 0.0;
   bool isLoading = false;
   bool isUsernameLoaded = false;
@@ -35,6 +44,18 @@ class _BookingPageState extends State<CreateBookingView> {
   @override
   void initState() {
     super.initState();
+
+    DateFormat format = DateFormat("yyyy-MM-dd");
+
+    _startDateController = TextEditingController(
+      text: widget.startDate != null ? format.format(widget.startDate!) : '',
+    );
+
+    _endDateController = TextEditingController(
+      text: widget.endDate != null ? format.format(widget.endDate!) : '',
+    );
+
+    guests = widget.guestCount;
     _fetchUsername();
     _fetchToken();
     _fetchPropertyDetails();
@@ -94,10 +115,11 @@ class _BookingPageState extends State<CreateBookingView> {
       return 0.0;
     }
 
-    DateTime? startDate = DateTime.tryParse(_startDateController.text);
-    DateTime? endDate = DateTime.tryParse(_endDateController.text);
+    DateFormat format = DateFormat("yyyy-MM-dd");
+    DateTime? startDate = format.parse(_startDateController.text);
+    DateTime? endDate = format.parse(_endDateController.text);
 
-    if (startDate == null || endDate == null || startDate.isAfter(endDate)) {
+    if (startDate.isAfter(endDate)) {
       return 0.0;
     }
 
@@ -135,7 +157,15 @@ class _BookingPageState extends State<CreateBookingView> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Booking confirmed!')),
+          SnackBar(
+            content: const Text('Booking confirmed!',
+                style: TextStyle(color: Colors.white)),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         );
         Navigator.pop(context);
       } else {
