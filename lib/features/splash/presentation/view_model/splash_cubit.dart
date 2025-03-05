@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:home_rental/features/auth/presentation/view_model/login/login_bloc.dart';
-import 'package:home_rental/features/onboarding/presentation/view/onboarding_view.dart.dart';
+import 'package:home_rental/features/onboarding/presentation/view/onboarding_view.dart';
 
 class SplashCubit extends Cubit<void> {
   SplashCubit(this._onboardingBloc) : super(null);
 
   final LoginBloc _onboardingBloc;
+
+  // SplashCubit(this.loginBloc) : super(null);
+
+  // final LoginBloc loginBloc;
 
   Future<void> init(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 5), () async {

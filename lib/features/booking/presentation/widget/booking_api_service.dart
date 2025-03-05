@@ -48,7 +48,7 @@ class BookingApiService {
     final url =
         '${ApiEndpoints.baseUrl}${ApiEndpoints.confirmBooking.replaceFirst(":bookingId", bookingId)}';
     try {
-      final response = await http.post(Uri.parse(url));
+      final response = await http.delete(Uri.parse(url));
       if (response.statusCode != 200) {
         throw Exception('Error during checkout: ${response.body}');
       }

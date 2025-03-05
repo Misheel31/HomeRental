@@ -20,30 +20,44 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFDBE7F9),
-      body: Stack(
-        children: [
-          Center(
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        bool isTablet = constraints.maxWidth > 600;
+
+        return Center(
+          child: SizedBox(
+            width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
+                  width: isTablet ? 350 : 250,
                   child: Image.asset('assets/images/Apartment rent-amico.png'),
                 ),
-                const Text(
+                Text(
                   'Rentify',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: isTablet ? 36 : 28,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: isTablet ? 60 : 50,
+                  height: isTablet ? 60 : 50,
+                ),
                 const CircularProgressIndicator(),
                 const SizedBox(height: 10),
-                const Text('version : 1.0.0')
+                Text(
+                  'version : 1.0.0',
+                  style: TextStyle(fontSize: isTablet ? 18 : 14),
+                )
               ],
             ),
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

@@ -71,7 +71,6 @@ class BookingList extends StatelessWidget {
                             const SizedBox(width: 12),
                             ElevatedButton(
                               onPressed: () {
-                                // Correctly pass both bookingId and context
                                 checkoutBooking(booking['_id'], context);
                               },
                               style: ElevatedButton.styleFrom(
