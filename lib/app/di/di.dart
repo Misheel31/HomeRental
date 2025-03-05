@@ -13,12 +13,23 @@ import 'package:home_rental/features/auth/domain/use_case/upload_image_usecase.d
 import 'package:home_rental/features/auth/presentation/view_model/login/login_bloc.dart';
 import 'package:home_rental/features/auth/presentation/view_model/signup/register_bloc.dart';
 import 'package:home_rental/features/home/presentation/view_model/home_cubit.dart';
+import 'package:home_rental/features/profile/data/data_source/remote_datasource/profile_remote_datasource.dart';
+import 'package:home_rental/features/profile/data/repository/profile_remote_repository/profile_remote_repository.dart';
+import 'package:home_rental/features/profile/domain/use_case/fetch_user_usecase.dart';
+import 'package:home_rental/features/profile/domain/use_case/get_current_user_usecase.dart';
+import 'package:home_rental/features/profile/presentation/view_model/profile_bloc.dart';
 import 'package:home_rental/features/property/data/data_source/remote_datasource/property_remote_datasource.dart';
 import 'package:home_rental/features/property/data/repository/property_remote_repository.dart';
 import 'package:home_rental/features/property/domain/use_case/create_property_usecase.dart';
 import 'package:home_rental/features/property/domain/use_case/delete_property_usecase.dart';
 import 'package:home_rental/features/property/domain/use_case/get_all_property_usecase.dart';
 import 'package:home_rental/features/splash/presentation/view_model/splash_cubit.dart';
+import 'package:home_rental/features/wishlist/data/data_source/remote_data_source/wishlist_remote_datasource.dart';
+import 'package:home_rental/features/wishlist/data/data_source/wishlist_data_source.dart';
+import 'package:home_rental/features/wishlist/data/repository/wishlist_remote_repository.dart/wishlist_remote_repository.dart';
+import 'package:home_rental/features/wishlist/domain/repository/wishlist_repository.dart';
+import 'package:home_rental/features/wishlist/domain/use_case/get_wishlist_usecase.dart';
+import 'package:home_rental/features/wishlist/presentation/view_model/wishlist_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -32,11 +43,21 @@ Future<void> initDependencies() async {
   await _initLoginDependencies();
   await _initSplashScreenDependencies();
   await _initPropertyDependencies();
+  await _initProfileDependencies();
+  _initWishlistDependencies();
 }
 
+// Future<void> _initSharedPreferences() async {
+//   final sharedPreferences = await SharedPreferences.getInstance();
+//   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+// }
+
 Future<void> _initSharedPreferences() async {
-  final sharedPreferences = await SharedPreferences.getInstance();
-  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  // First check if SharedPreferences is already registered
+  if (!getIt.isRegistered<SharedPreferences>()) {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  }
 }
 
 _initHiveService() {
@@ -78,11 +99,12 @@ _initRegisterDependencies() {
   // =========================== Usecases ===========================
 
   // register use usecase
-  // getIt.registerLazySingleton<RegisterUseCase>(
-  //   () => RegisterUseCase(
+  // getIt.registerLazySingleton<RegisterUserUsecase>(
+  //   () => RegisterUserUsecase(
   //     getIt<AuthLocalRepository>(),
   //   ),
   // );
+
   getIt.registerLazySingleton<RegisterUserUsecase>(
     () => RegisterUserUsecase(
       getIt<AuthRemoteRepository>(),
@@ -104,12 +126,14 @@ _initRegisterDependencies() {
 }
 
 _initPropertyDependencies() async {
-  // Register the PropertyRemoteDatasource
   getIt.registerLazySingleton<PropertyRemoteDatasource>(
     () => PropertyRemoteDatasource(dio: getIt<Dio>()),
   );
 
-  // Register the PropertyRemoteRepository
+  //   getIt.registerLazySingleton<PropertyRemoteDatasource>(
+  //   () => PropertyRemoteDatasource(dio: getIt<Dio>()),
+  // );
+
   getIt.registerLazySingleton<PropertyRemoteRepository>(
     () => PropertyRemoteRepository(
       getIt<AuthRemoteDataSource>(),
@@ -134,6 +158,58 @@ _initPropertyDependencies() async {
           tokenSharedPrefs: getIt<TokenSharedPrefs>()));
 }
 
+//=======================Profile===================================
+
+_initProfileDependencies() {
+  // print("Registering ProfileRemoteDatasource");
+
+  // Register ProfileRemoteDatasource
+  getIt.registerLazySingleton<ProfileRemoteDatasource>(
+    () => ProfileRemoteDatasource(getIt<Dio>(), getIt<SharedPreferences>()),
+  );
+
+  // Register ProfileRemoteRepository
+  getIt.registerLazySingleton<ProfileRemoteRepository>(
+    () => ProfileRemoteRepository(getIt<ProfileRemoteDatasource>(),
+        getIt<Dio>(), getIt<SharedPreferences>()),
+  );
+
+  // Register FetchUserUsecase
+  getIt.registerFactory<FetchUserUsecase>(
+    () => FetchUserUsecase(getIt<ProfileRemoteRepository>()),
+  );
+
+  getIt.registerLazySingleton<GetCurrentUserUseCase>(
+    () => GetCurrentUserUseCase(
+      getIt<AuthRemoteRepository>(),
+    ),
+  );
+
+  getIt.registerFactory<ProfileBloc>(
+    () => ProfileBloc(
+      getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
+    ),
+  );
+}
+
+//=======================Wishlist======================
+void _initWishlistDependencies() {
+  // Register the data source with the interface (IWishlistDataSource)
+  getIt.registerLazySingleton<IWishlistDataSource>(
+      () => WishlistRemoteDatasource(dio: getIt<Dio>()));
+
+  getIt.registerLazySingleton<IWishlistRepository>(() =>
+      WishlistRemoteRepository(
+          remoteDatasource: getIt<WishlistRemoteDatasource>()));
+
+  getIt.registerLazySingleton<GetWishlistUseCase>(
+      () => GetWishlistUseCase(getIt<IWishlistRepository>()));
+
+  getIt.registerFactory<WishlistBloc>(
+      () => WishlistBloc(getIt<IWishlistRepository>()));
+}
+
+//============================Home==============================
 _initHomeDependencies() async {
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(),
@@ -170,7 +246,7 @@ _initLoginDependencies() async {
 }
 
 _initSplashScreenDependencies() async {
-  getIt.registerFactory<SplashCubit>(
+  getIt.registerLazySingleton<SplashCubit>(
     () => SplashCubit(getIt<LoginBloc>()),
   );
 }
